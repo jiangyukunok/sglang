@@ -69,6 +69,46 @@ sglang generate \
   --save-output
 ```
 
+**Upscaling** (images and videos)
+
+Upscaling is a post-processing step that applies super-resolution to increase
+the spatial resolution of generated images or video frames using
+[Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN).  The default model
+(`realesr-animevideov3`) is lightweight and works well for both images and
+video frames.
+
+- `--enable-upscaling`: Enable post-generation upscaling. Model weights are downloaded automatically on first use.
+- `--upscaling-scale {SCALE}`: Output scale factor — `2` or `4` (default: `4`)
+- `--upscaling-tile-size {SIZE}`: Tile size for inference — `0` = no tiling (default: `0`). Use `256` or `512` if you encounter CUDA OOM on high-resolution inputs.
+- `--upscaling-model-path {PATH}`: Local path or HuggingFace repo ID for Real-ESRGAN weights (default: `leonelhs/realesrgan`, downloaded automatically)
+
+Example — generate a video and upscale 4×:
+
+```bash
+sglang generate \
+  --model-path Wan-AI/Wan2.2-T2V-A14B-Diffusers \
+  --prompt "A dog running through a park" \
+  --num-frames 5 \
+  --enable-upscaling \
+  --upscaling-scale 4 \
+  --save-output
+```
+
+Frame interpolation and upscaling can be combined.  When both are enabled,
+interpolation runs first (at the original resolution) and then all frames are
+upscaled:
+
+```bash
+sglang generate \
+  --model-path Wan-AI/Wan2.2-T2V-A14B-Diffusers \
+  --prompt "A dog running through a park" \
+  --num-frames 5 \
+  --enable-frame-interpolation --frame-interpolation-exp 1 \
+  --enable-upscaling --upscaling-scale 4 \
+  --save-output
+```
+
+
 **Output Options**
 
 - `--output-path {PATH}`: Directory to save the generated video

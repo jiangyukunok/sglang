@@ -268,6 +268,10 @@ class GPUWorker:
                     frame_interpolation_exp=req.frame_interpolation_exp,
                     frame_interpolation_scale=req.frame_interpolation_scale,
                     frame_interpolation_model_path=req.frame_interpolation_model_path,
+                    enable_upscaling=req.enable_upscaling,
+                    upscaling_scale=req.upscaling_scale,
+                    upscaling_tile_size=req.upscaling_tile_size,
+                    upscaling_model_path=req.upscaling_model_path,
                 )
                 output_batch.output_file_paths = output_paths
                 output_batch.output = None

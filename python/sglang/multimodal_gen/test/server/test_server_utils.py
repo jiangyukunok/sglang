@@ -992,6 +992,9 @@ def get_generate_fn(
             extra_body["frame_interpolation_exp"] = (
                 sampling_params.frame_interpolation_exp
             )
+        if sampling_params.enable_upscaling:
+            extra_body["enable_upscaling"] = True
+            extra_body["upscaling_scale"] = sampling_params.upscaling_scale
 
         # Compute expected output frame count for validation
         expected_frame_count = None

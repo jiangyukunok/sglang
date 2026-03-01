@@ -46,6 +46,11 @@ class ImageGenerationsRequest(BaseModel):
     output_quality: Optional[str] = "default"
     output_compression: Optional[int] = None
     enable_teacache: Optional[bool] = False
+    # Upscaling
+    enable_upscaling: Optional[bool] = False
+    upscaling_scale: Optional[int] = 4
+    upscaling_tile_size: Optional[int] = 0
+    upscaling_model_path: Optional[str] = None
     diffusers_kwargs: Optional[Dict[str, Any]] = None  # kwargs for diffusers backend
 
 
@@ -95,6 +100,11 @@ class VideoGenerationsRequest(BaseModel):
     frame_interpolation_exp: Optional[int] = 1  # 1=2×, 2=4×
     frame_interpolation_scale: Optional[float] = 1.0
     frame_interpolation_model_path: Optional[str] = None
+    # Upscaling
+    enable_upscaling: Optional[bool] = False
+    upscaling_scale: Optional[int] = 4
+    upscaling_tile_size: Optional[int] = 0
+    upscaling_model_path: Optional[str] = None
     output_quality: Optional[str] = "default"
     output_compression: Optional[int] = None
     output_path: Optional[str] = None

@@ -222,6 +222,10 @@ class DiffusionSamplingParams:
     enable_frame_interpolation: bool = False
     frame_interpolation_exp: int = 1  # 1 = 2×, 2 = 4×
 
+    # Upscaling
+    enable_upscaling: bool = False
+    upscaling_scale: int = 4
+
 
 @dataclass(frozen=True)
 class DiffusionTestCase:
@@ -512,6 +516,21 @@ ONE_GPU_CASES_B: list[DiffusionTestCase] = [
             num_frames=5,
             enable_frame_interpolation=True,
             frame_interpolation_exp=1,
+        ),
+    ),
+    # Upscaling correctness (4×)
+    DiffusionTestCase(
+        "wan2_1_t2v_1.3b_upscale_4x",
+        DiffusionServerArgs(
+            model_path="Wan-AI/Wan2.1-T2V-1.3B-Diffusers",
+            modality="video",
+            custom_validator="video",
+        ),
+        DiffusionSamplingParams(
+            prompt=T2V_PROMPT,
+            num_frames=5,
+            enable_upscaling=True,
+            upscaling_scale=4,
         ),
     ),
     # LoRA test case for single transformer + merge/unmerge API test

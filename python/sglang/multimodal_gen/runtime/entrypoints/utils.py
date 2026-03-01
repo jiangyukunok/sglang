@@ -345,6 +345,10 @@ def save_outputs(
     frame_interpolation_exp: int = 1,
     frame_interpolation_scale: float = 1.0,
     frame_interpolation_model_path: Optional[str] = None,
+    enable_upscaling: bool = False,
+    upscaling_scale: int = 4,
+    upscaling_tile_size: int = 0,
+    upscaling_model_path: Optional[str] = None,
 ) -> list[str]:
     """Save outputs to files and return the list of file paths."""
     output_paths: list[str] = []
@@ -366,6 +370,10 @@ def save_outputs(
             frame_interpolation_exp=frame_interpolation_exp,
             frame_interpolation_scale=frame_interpolation_scale,
             frame_interpolation_model_path=frame_interpolation_model_path,
+            enable_upscaling=enable_upscaling,
+            upscaling_scale=upscaling_scale,
+            upscaling_tile_size=upscaling_tile_size,
+            upscaling_model_path=upscaling_model_path,
         )
 
         if samples_out is not None:
@@ -398,9 +406,13 @@ def post_process_sample(
     frame_interpolation_exp: int = 1,
     frame_interpolation_scale: float = 1.0,
     frame_interpolation_model_path: Optional[str] = None,
+    enable_upscaling: bool = False,
+    upscaling_scale: int = 4,
+    upscaling_tile_size: int = 0,
+    upscaling_model_path: Optional[str] = None,
 ):
     """
-    Process sample output, optionally interpolate video frames, and save.
+    Process sample output, optionally interpolate video frames, upscale, and save.
     """
     audio = None
     if isinstance(sample, (tuple, list)) and len(sample) == 2:
@@ -453,7 +465,18 @@ def post_process_sample(
         )
         fps = fps * multiplier
 
-    # 3. Save outputs if requested
+    # 3. Upscaling (images and videos)
+    if enable_upscaling and frames and len(frames) >= 1:
+        from sglang.multimodal_gen.runtime.postprocess import upscale_frames
+
+        frames = upscale_frames(
+            frames,
+            outscale=upscaling_scale,
+            tile_size=upscaling_tile_size,
+            model_path=upscaling_model_path,
+        )
+
+    # 4. Save outputs if requested
     if save_output:
         if save_file_path:
             os.makedirs(os.path.dirname(save_file_path), exist_ok=True)

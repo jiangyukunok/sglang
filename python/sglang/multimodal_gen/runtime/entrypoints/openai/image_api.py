@@ -117,6 +117,10 @@ async def generations(
         true_cfg_scale=request.true_cfg_scale,
         negative_prompt=request.negative_prompt,
         enable_teacache=request.enable_teacache,
+        enable_upscaling=request.enable_upscaling,
+        upscaling_scale=request.upscaling_scale,
+        upscaling_tile_size=request.upscaling_tile_size,
+        upscaling_model_path=request.upscaling_model_path,
         output_compression=request.output_compression,
         output_quality=request.output_quality,
     )
@@ -190,6 +194,10 @@ async def edits(
     output_quality: Optional[str] = Form("default"),
     output_compression: Optional[int] = Form(None),
     enable_teacache: Optional[bool] = Form(False),
+    enable_upscaling: Optional[bool] = Form(False),
+    upscaling_scale: Optional[int] = Form(4),
+    upscaling_tile_size: Optional[int] = Form(0),
+    upscaling_model_path: Optional[str] = Form(None),
     num_frames: int = Form(1),
 ):
     request_id = generate_request_id()
@@ -236,6 +244,10 @@ async def edits(
         true_cfg_scale=true_cfg_scale,
         num_inference_steps=num_inference_steps,
         enable_teacache=enable_teacache,
+        enable_upscaling=enable_upscaling,
+        upscaling_scale=upscaling_scale,
+        upscaling_tile_size=upscaling_tile_size,
+        upscaling_model_path=upscaling_model_path,
         num_frames=num_frames,
         output_compression=output_compression,
         output_quality=output_quality,
